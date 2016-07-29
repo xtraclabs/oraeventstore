@@ -32,6 +32,12 @@ create table events (
     primary key(aggregate_id,version)
 )
 
+create table publish (
+    aggregate_id varchar2(60)not null,
+    version integer not null,
+    primary key(aggregate_id,version)
+);
+
 create user esusr
 identified by password
 default tablespace users
@@ -40,3 +46,5 @@ temporary tablespace temp;
 create or replace synonym esusr.events for esdbo.events
 grant select, insert on events to esusr;
 grant connect to esusr;
+
+create or replace synonym esusr.publish for esdbo.publish

@@ -48,3 +48,4 @@ grant select, insert on events to esusr;
 grant connect to esusr;
 
 create or replace synonym esusr.publish for esdbo.publish
+grant select, insert on publish to esusr;

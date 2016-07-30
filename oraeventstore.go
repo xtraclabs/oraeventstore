@@ -45,7 +45,7 @@ func (ora *OraEventStore) GetMaxVersionForAggregate(aggId string) (*int, error) 
 }
 
 func InsertEventFromParts(db *sql.DB, aggId string, version int, typecode string, payload []byte) error {
-	_, err := db.Exec("insert into events (aggregate_id, version, typecode, payload) values ($1, $2, $3, $4)",
+	_, err := db.Exec("insert into events (aggregate_id, version, typecode, payload) values (:1, :2, :3, :4)",
 		aggId, version, typecode, payload)
 	return err
 }
@@ -69,7 +69,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 	if ora.publish {
 		log.Println("create publish statement")
 		var pubstmtErr error
-		pubStmt, pubstmtErr = tx.Prepare("insert into publish (aggregate_id, version) values ($1, $2)")
+		pubStmt, pubstmtErr = tx.Prepare("insert into publish (aggregate_id, version) values (:1, :2)")
 		if pubstmtErr != nil {
 			return pubstmtErr
 		}

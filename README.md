@@ -26,6 +26,7 @@ Tables, create as esdbo:
 <pre>
 create table events (
     id  number generated always as identity,
+    event_time timestamp DEFAULT current_timestamp,
     aggregate_id varchar2(60)not null,
     version integer not null,
     typecode varchar2(30) not null,
@@ -50,9 +51,9 @@ temporary tablespace temp;
 
 grant connect to esusr;
 
-create or replace synonym esusr.events for esdbo.events
+create or replace synonym esusr.events for esdbo.events;
 grant select, insert on events to esusr;
 
-create or replace synonym esusr.publish for esdbo.publish
+create or replace synonym esusr.publish for esdbo.publish;
 grant select, insert on publish to esusr;
 <pre>

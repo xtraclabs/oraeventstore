@@ -21,8 +21,9 @@ grant dba to esdbo;
 </pre>
 
 
+Tables, create as esdbo:
 
-
+<pre>
 create table events (
     id  number generated always as identity,
     aggregate_id varchar2(60)not null,
@@ -37,15 +38,21 @@ create table publish (
     version integer not null,
     primary key(aggregate_id,version)
 );
+</pre>
 
+Create a user to access the tables.
+
+<pre>
 create user esusr
 identified by password
 default tablespace users
 temporary tablespace temp;
 
+grant connect to esusr;
+
 create or replace synonym esusr.events for esdbo.events
 grant select, insert on events to esusr;
-grant connect to esusr;
 
 create or replace synonym esusr.publish for esdbo.publish
 grant select, insert on publish to esusr;
+<pre>

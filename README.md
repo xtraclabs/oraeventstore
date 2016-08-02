@@ -58,7 +58,7 @@ grant select, insert on events to esusr;
 
 create or replace synonym esusr.publish for esdbo.publish;
 grant select, insert on publish to esusr;
-<pre>
+</pre>
 
 ## A Note on the Publish Table
 

@@ -33,6 +33,8 @@ func (ora *OraEventStore) GetMaxVersionForAggregate(aggId string) (*int, error) 
 		return nil, err
 	}
 
+	defer row.Close()
+
 	var max int
 	row.Scan(&max)
 

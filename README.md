@@ -57,7 +57,7 @@ create or replace synonym esusr.events for esdbo.events;
 grant select, insert on events to esusr;
 
 create or replace synonym esusr.publish for esdbo.publish;
-grant select, insert on publish to esusr;
+grant select, insert, delete on publish to esusr;
 </pre>
 
 ## A Note on the Publish Table

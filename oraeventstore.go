@@ -54,14 +54,14 @@ func InsertEventFromParts(db *sql.DB, aggId string, version int, typecode string
 
 func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 
-	log.Println("start transaction")
+	log.Debug("start transaction")
 	tx, err := ora.db.Begin()
 	if err != nil {
 		return err
 	}
 	defer tx.Rollback()
 
-	log.Println("create statement")
+	log.Debug("prepare statement")
 	stmt, err := tx.Prepare(insertSQL)
 	if err != nil {
 		return err
@@ -69,7 +69,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 
 	var pubStmt *sql.Stmt
 	if ora.publish {
-		log.Println("create publish statement")
+		log.Debug("create publish statement")
 		var pubstmtErr error
 		pubStmt, pubstmtErr = tx.Prepare("insert into publish (aggregate_id, version) values (:1, :2)")
 		if pubstmtErr != nil {
@@ -78,26 +78,26 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 	}
 
 	for _, e := range agg.Events {
-		log.Printf("process event %v\n", e)
+		log.Debug("process event %v\n", e)
 		eventBytes, ok := e.Payload.([]byte)
 		if !ok {
 			stmt.Close()
 			return ErrPayloadType
 		}
 
-		log.Println("execute statement")
+		log.Debug("execute statement")
 		_, execerr := stmt.Exec(agg.ID, e.Version, e.TypeCode, eventBytes)
 		if execerr != nil {
 			stmt.Close()
-			log.Println(execerr.Error())
+			log.Warn(execerr.Error())
 			return ErrEventInsert
 		}
 
 		if ora.publish {
-			log.Println("execute publish statement")
+			log.Debug("execute publish statement")
 			_, puberr := pubStmt.Exec(agg.ID, e.Version)
 			if puberr != nil {
-				log.Println(puberr.Error())
+				log.Warn(puberr.Error())
 				return ErrPubInsert
 			}
 		}
@@ -108,7 +108,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 		pubStmt.Close()
 	}
 
-	log.Println("commit transaction")
+	log.Debug("commit transaction")
 	err = tx.Commit()
 	if err != nil {
 		return err
@@ -173,23 +173,23 @@ func NewPGEventStore(user, password, dbname, host, port string) (*OraEventStore,
 	log.Infof("Connect using %s", connectStr)
 	db, err := sql.Open("oci8", connectStr)
 	if err != nil {
-		log.Infof("Error connecting to oracle", err.Error())
+		log.Warnf("Error connecting to oracle", err.Error())
 		return nil, err
 	}
 
 	//Are we really in an ok state for starters?
 	err = db.Ping()
 	if err != nil {
-		log.Infof("Error connecting to oracle", err.Error())
+		log.Warnf("Error connecting to oracle", err.Error())
 		return nil, err
 	}
 
 	publishEvents := os.Getenv(EventPublishEnvVar)
 	switch publishEvents {
 	case "1":
-		log.Println("Event store configured to write records to publish table")
+		log.Info("Event store configured to write records to publish table")
 	default:
-		log.Println("Event store will not write records to publish table - export ",
+		log.Info("Event store will not write records to publish table - export ",
 			EventPublishEnvVar, "= 1 to enable writing to publish table")
 
 	}

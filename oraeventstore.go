@@ -168,7 +168,7 @@ func (ora *OraEventStore) RetrieveEvents(aggID string) ([]goes.Event, error) {
 	return events, err
 }
 
-func NewPGEventStore(user, password, dbname, host, port string) (*OraEventStore, error) {
+func NewOraEventStore(user, password, dbname, host, port string) (*OraEventStore, error) {
 	connectStr := fmt.Sprintf("%s/%s@//%s:%s/%s", user, password,host,port,dbname)
 	log.Infof("Connect using %s", connectStr)
 	db, err := sql.Open("oci8", connectStr)

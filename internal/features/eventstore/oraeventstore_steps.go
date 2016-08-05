@@ -19,7 +19,7 @@ func init() {
 
 	Given(`^a new aggregate instance$`, func() {
 		log.Info("create event store")
-		eventStore, _ = oraeventstore.NewPGEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
+		eventStore, _ = oraeventstore.NewOraEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
 		if assert.NotNil(T, eventStore) {
 			var err error
 			testAgg, err = NewTestAgg("new foo", "new bar", "new baz")

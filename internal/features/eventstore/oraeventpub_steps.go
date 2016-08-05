@@ -22,7 +22,7 @@ func init() {
 
 	When(`^I store an aggregate$`, func() {
 		var err error
-		eventStore, err = oraeventstore.NewPGEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
+		eventStore, err = oraeventstore.NewOraEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
 		if err != nil {
 			log.Infof("Error connecting to oracle: %s", err.Error())
 		}
@@ -71,7 +71,7 @@ func init() {
 	})
 
 	When(`^I store a new aggregate$`, func() {
-		eventStore, err := oraeventstore.NewPGEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
+		eventStore, err := oraeventstore.NewOraEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
 		if err != nil {
 			log.Infof("Error creating event store: %s", err.Error())
 		}

@@ -27,7 +27,7 @@ func main() {
 		log.Infof("No event history for the given aggregate")
 		return
 	}
-	
+
 	log.Infof("Your aggregate:")
 	log.Infof("\taggregate id: %s", testAgg.Aggregate.ID)
 	log.Infof("\tversion: %d",testAgg.Version)

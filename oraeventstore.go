@@ -173,7 +173,7 @@ func NewOraEventStore(user, password, dbname, host, port string) (*OraEventStore
 	log.Infof("Connect using %s", connectStr)
 	db, err := sql.Open("oci8", connectStr)
 	if err != nil {
-		log.Warnf("Error connecting to oracle", err.Error())
+		log.Warnf("Error connecting to oracle: %s", err.Error())
 		return nil, err
 	}
 

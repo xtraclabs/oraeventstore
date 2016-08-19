@@ -180,7 +180,7 @@ func NewOraEventStore(user, password, dbname, host, port string) (*OraEventStore
 	//Are we really in an ok state for starters?
 	err = db.Ping()
 	if err != nil {
-		log.Warnf("Error connecting to oracle", err.Error())
+		log.Warnf("Error connecting to oracle: %s", err.Error())
 		return nil, err
 	}
 

@@ -6,7 +6,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	. "github.com/lsegal/gucumber"
 	"github.com/stretchr/testify/assert"
-	. "github.com/xtraclabs/goessample/testagg"
+	. "github.com/xtraclabs/goes/sample/testagg"
 	"github.com/xtraclabs/oraeventstore"
 	"os"
 )

@@ -4,7 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/xtraclabs/oraeventstore"
 	"os"
-	"github.com/xtraclabs/goessample/testagg"
+	"github.com/xtraclabs/goes/sample/testagg"
 )
 
 func main() {

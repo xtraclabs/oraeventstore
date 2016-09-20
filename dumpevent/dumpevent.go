@@ -2,9 +2,9 @@ package main
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/xtracdev/goes/sample/testagg"
 	"github.com/xtracdev/oraeventstore"
 	"os"
-	"github.com/xtracdev/goes/sample/testagg"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 
 	events, err := eventStore.RetrieveEvents(os.Args[1])
 	if err != nil {
-		log.Fatalf("Error loading events: %s",err.Error())
+		log.Fatalf("Error loading events: %s", err.Error())
 	}
 
 	testAgg := testagg.NewTestAggFromHistory(events)
@@ -30,8 +30,8 @@ func main() {
 
 	log.Infof("Your aggregate:")
 	log.Infof("\taggregate id: %s", testAgg.Aggregate.ID)
-	log.Infof("\tversion: %d",testAgg.Version)
-	log.Infof("\tfoo: %s",testAgg.Foo)
-	log.Infof("\tbar: %s",testAgg.Bar)
-	log.Infof("\tbaz: %s",testAgg.Baz)
+	log.Infof("\tversion: %d", testAgg.Version)
+	log.Infof("\tfoo: %s", testAgg.Foo)
+	log.Infof("\tbar: %s", testAgg.Bar)
+	log.Infof("\tbaz: %s", testAgg.Baz)
 }

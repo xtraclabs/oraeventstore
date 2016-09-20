@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	log "github.com/Sirupsen/logrus"
 	_ "github.com/mattn/go-oci8"
 	"github.com/xtracdev/goes"
-	log "github.com/Sirupsen/logrus"
 	"os"
 )
 
@@ -169,7 +169,7 @@ func (ora *OraEventStore) RetrieveEvents(aggID string) ([]goes.Event, error) {
 }
 
 func NewOraEventStore(user, password, dbname, host, port string) (*OraEventStore, error) {
-	connectStr := fmt.Sprintf("%s/%s@//%s:%s/%s", user, password,host,port,dbname)
+	connectStr := fmt.Sprintf("%s/%s@//%s:%s/%s", user, password, host, port, dbname)
 	log.Infof("Connect using %s", connectStr)
 	db, err := sql.Open("oci8", connectStr)
 	if err != nil {

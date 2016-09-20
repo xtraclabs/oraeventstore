@@ -1,0 +1,7 @@
+machine:
+  services:
+   - docker
+
+test:
+  verify:
+   - docker run --rm -v "$PWD":/go/src/github.com/xtracdev/oraeventstore -w /go/src/github.com/xtracdev/oraeventstore xtracdev/goora bash -c make

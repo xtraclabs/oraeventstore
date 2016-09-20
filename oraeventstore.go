@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	_ "github.com/mattn/go-oci8"
-	"github.com/xtraclabs/goes"
+	"github.com/xtracdev/goes"
 	log "github.com/Sirupsen/logrus"
 	"os"
 )

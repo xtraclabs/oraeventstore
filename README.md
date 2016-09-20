@@ -68,3 +68,13 @@ to read from the table to pick up the published aggregate, read the
 actual data from the event store table, do something with it (publish it
 to a queue, write out CQRS query views, etc), then delete the record from the
 publish table.
+
+
+## Dependencies
+
+<pre>
+go get github.com/xtracdev/goes
+go get github.com/Sirupsen/logrus
+go get github.com/gucumber/gucumber
+go get github.com/stretchr/testify/assert
+</pre>

@@ -2,9 +2,9 @@ package main
 
 import (
 	log "github.com/Sirupsen/logrus"
-	"github.com/xtraclabs/oraeventstore"
+	"github.com/xtracdev/oraeventstore"
 	"os"
-	"github.com/xtraclabs/goes/sample/testagg"
+	"github.com/xtracdev/goes/sample/testagg"
 )
 
 func main() {

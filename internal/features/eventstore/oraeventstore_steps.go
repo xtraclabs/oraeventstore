@@ -4,9 +4,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 	. "github.com/gucumber/gucumber"
 	"github.com/stretchr/testify/assert"
-	"github.com/xtraclabs/goes"
-	. "github.com/xtraclabs/goes/sample/testagg"
-	"github.com/xtraclabs/oraeventstore"
+	"github.com/xtracdev/goes"
+	. "github.com/xtracdev/goes/sample/testagg"
+	"github.com/xtracdev/oraeventstore"
 )
 
 func init() {

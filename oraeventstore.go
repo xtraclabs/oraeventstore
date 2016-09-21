@@ -170,7 +170,7 @@ func (ora *OraEventStore) RetrieveEvents(aggID string) ([]goes.Event, error) {
 
 func NewOraEventStore(user, password, dbname, host, port string) (*OraEventStore, error) {
 	connectStr := fmt.Sprintf("%s/%s@//%s:%s/%s", user, password, host, port, dbname)
-	log.Infof("Connect using %s", connectStr)
+	log.Infof("Connect using %s/XXXXXX@//%s:%s/%s", user, host, port, dbname)
 	db, err := sql.Open("oci8", connectStr)
 	if err != nil {
 		log.Warnf("Error connecting to oracle: %s", err.Error())

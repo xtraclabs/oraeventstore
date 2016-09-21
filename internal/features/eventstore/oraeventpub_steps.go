@@ -45,7 +45,6 @@ func init() {
 
 	Then(`^no events are written to the publish table$`, func() {
 
-		log.Infof("Connect using %s", connectStr)
 		db, err := sql.Open("oci8", connectStr)
 		if err != nil {
 			log.Infof("Error connecting to oracle: %s", err.Error())
@@ -88,7 +87,6 @@ func init() {
 	})
 
 	Then(`^the events are written to the publish table$`, func() {
-		log.Infof("Connect using %s", connectStr)
 		db, err := sql.Open("oci8", connectStr)
 		if !assert.Nil(T, err) {
 			return

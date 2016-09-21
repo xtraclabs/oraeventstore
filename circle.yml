@@ -3,5 +3,5 @@ machine:
    - docker
 
 test:
-  verify:
+  override:
    - docker run --rm -v "$PWD":/go/src/github.com/xtracdev/oraeventstore -w /go/src/github.com/xtracdev/oraeventstore xtracdev/goora bash -c make

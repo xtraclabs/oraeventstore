@@ -15,11 +15,10 @@ import (
 func init() {
 	var eventStore *oraeventstore.OraEventStore
 	var testAgg, testAgg2 *TestAgg
-	var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
 
 	Given(`^an evironment with event publishing disabled$`, func() {
 		if len(configErrors) != 0 {
-			assert.Fail(T,strings.Join(configErrors, "\n"))
+			assert.Fail(T, strings.Join(configErrors, "\n"))
 			return
 		}
 
@@ -50,7 +49,7 @@ func init() {
 	})
 
 	Then(`^no events are written to the publish table$`, func() {
-
+		var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
 		db, err := sql.Open("oci8", connectStr)
 		if err != nil {
 			log.Infof("Error connecting to oracle: %s", err.Error())
@@ -73,7 +72,7 @@ func init() {
 
 	Given(`^an environment with event publishing enabled$`, func() {
 		if len(configErrors) != 0 {
-			assert.Fail(T,strings.Join(configErrors, "\n"))
+			assert.Fail(T, strings.Join(configErrors, "\n"))
 			return
 		}
 
@@ -81,7 +80,7 @@ func init() {
 	})
 
 	When(`^I store a new aggregate$`, func() {
-		eventStore, err := oraeventstore.NewOraEventStore(DBUser,DBPassword, DBSvc, DBHost, DBPort)
+		eventStore, err := oraeventstore.NewOraEventStore(DBUser, DBPassword, DBSvc, DBHost, DBPort)
 		if err != nil {
 			log.Infof("Error creating event store: %s", err.Error())
 		}
@@ -98,6 +97,7 @@ func init() {
 	})
 
 	Then(`^the events are written to the publish table$`, func() {
+		var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
 		db, err := sql.Open("oci8", connectStr)
 		if !assert.Nil(T, err) {
 			return

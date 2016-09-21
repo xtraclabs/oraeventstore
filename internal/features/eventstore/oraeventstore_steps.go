@@ -20,7 +20,7 @@ func init() {
 
 	Given(`^a new aggregate instance$`, func() {
 		if len(configErrors) != 0 {
-			assert.Fail(T,strings.Join(configErrors, "\n"))
+			assert.Fail(T, strings.Join(configErrors, "\n"))
 			return
 		}
 
@@ -68,7 +68,7 @@ func init() {
 
 	Given(`^a persisted aggregate$`, func() {
 		if len(configErrors) != 0 {
-			assert.Fail(T,strings.Join(configErrors, "\n"))
+			assert.Fail(T, strings.Join(configErrors, "\n"))
 			return
 		}
 

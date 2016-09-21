@@ -12,7 +12,6 @@ var DBPort string
 var DBSvc string
 var configErrors []string
 
-
 func init() {
 	Given(`^some tests to run$`, func() {
 	})
@@ -47,6 +46,5 @@ func init() {
 		}
 
 	})
-
 
 }

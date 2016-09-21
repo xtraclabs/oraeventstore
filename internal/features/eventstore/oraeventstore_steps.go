@@ -7,6 +7,7 @@ import (
 	"github.com/xtracdev/goes"
 	. "github.com/xtracdev/goes/sample/testagg"
 	"github.com/xtracdev/oraeventstore"
+	"strings"
 )
 
 func init() {
@@ -18,8 +19,13 @@ func init() {
 	var events []goes.Event
 
 	Given(`^a new aggregate instance$`, func() {
+		if len(configErrors) != 0 {
+			assert.Fail(T,strings.Join(configErrors, "\n"))
+			return
+		}
+
 		log.Info("create event store")
-		eventStore, _ = oraeventstore.NewOraEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
+		eventStore, _ = oraeventstore.NewOraEventStore(DBUser, DBPassword, DBSvc, DBHost, DBPort)
 		if assert.NotNil(T, eventStore) {
 			var err error
 			testAgg, err = NewTestAgg("new foo", "new bar", "new baz")
@@ -61,6 +67,16 @@ func init() {
 	})
 
 	Given(`^a persisted aggregate$`, func() {
+		if len(configErrors) != 0 {
+			assert.Fail(T,strings.Join(configErrors, "\n"))
+			return
+		}
+
+		if eventStore == nil {
+			assert.Fail(T, "Can't connect to event store.. FAIL!")
+			return
+		}
+
 		var err error
 		log.Println("create an aggregate")
 		anotherAgg, err = NewTestAgg("foo2", "bar2", "baz2")

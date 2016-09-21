@@ -9,20 +9,26 @@ import (
 	. "github.com/xtracdev/goes/sample/testagg"
 	"github.com/xtracdev/oraeventstore"
 	"os"
+	"strings"
 )
 
 func init() {
 	var eventStore *oraeventstore.OraEventStore
 	var testAgg, testAgg2 *TestAgg
-	var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", "esusr", "password", "localhost", "1521", "xe.oracle.docker")
+	var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
 
 	Given(`^an evironment with event publishing disabled$`, func() {
+		if len(configErrors) != 0 {
+			assert.Fail(T,strings.Join(configErrors, "\n"))
+			return
+		}
+
 		os.Setenv(oraeventstore.EventPublishEnvVar, "0")
 	})
 
 	When(`^I store an aggregate$`, func() {
 		var err error
-		eventStore, err = oraeventstore.NewOraEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
+		eventStore, err = oraeventstore.NewOraEventStore(DBUser, DBPassword, DBSvc, DBHost, DBPort)
 		if err != nil {
 			log.Infof("Error connecting to oracle: %s", err.Error())
 		}
@@ -66,11 +72,16 @@ func init() {
 	})
 
 	Given(`^an environment with event publishing enabled$`, func() {
+		if len(configErrors) != 0 {
+			assert.Fail(T,strings.Join(configErrors, "\n"))
+			return
+		}
+
 		os.Setenv(oraeventstore.EventPublishEnvVar, "1")
 	})
 
 	When(`^I store a new aggregate$`, func() {
-		eventStore, err := oraeventstore.NewOraEventStore("esusr", "password", "xe.oracle.docker", "localhost", "1521")
+		eventStore, err := oraeventstore.NewOraEventStore(DBUser,DBPassword, DBSvc, DBHost, DBPort)
 		if err != nil {
 			log.Infof("Error creating event store: %s", err.Error())
 		}

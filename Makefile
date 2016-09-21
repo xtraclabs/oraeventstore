@@ -5,4 +5,7 @@ build:
 	go get github.com/rjeczalik/pkgconfig/cmd/pkg-config
 	go get -u github.com/mattn/go-oci8
 	go get github.com/xtracdev/goes
-	go build
+	go get github.com/gucumber/gucumber/cmd/gucumber
+	go get github.com/golang/protobuf/proto
+	go get github.com/stretchr/testify/assert
+	gucumber

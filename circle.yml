@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   override:
+    - docker run --rm -v "$PWD":/go/src/github.com/xtracdev/oraeventstore -w /go/src/github.com/xtracdev/oraeventstore xtracdev/goora bash -c make
 
 test:
   override:
-   - docker run --rm -v "$PWD":/go/src/github.com/xtracdev/oraeventstore -w /go/src/github.com/xtracdev/oraeventstore xtracdev/goora bash -c make

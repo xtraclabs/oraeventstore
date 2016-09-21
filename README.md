@@ -1,5 +1,7 @@
 ## Go Lang Set Up
 
+[![CircleCI](https://circleci.com/gh/xtracdev/oraeventstore.svg?style=svg)](https://circleci.com/gh/xtracdev/oraeventstore)
+
 Note that the settings in pkgconfig/oci8.pc need to be correct or the go get of
 the go-oci8 package will fail.
 

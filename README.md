@@ -13,7 +13,8 @@ go get -u github.com/mattn/go-oci8
 
 ## Database Set Up
 
-Initial set up - login as system/oracle, and create the dbo user for the rest of the setup...
+For the database set up, create two users: one to own and manage the schema
+objects, and the other for runtime access:
 
 <pre>
 create user esdbo
@@ -22,6 +23,24 @@ default tablespace users
 temporary tablespace temp;
 
 grant dba to esdbo;
+
+create user esusr
+identified by password
+default tablespace users
+temporary tablespace temp;
+
+grant connect to esusr;
+</pre>
+
+To install the schema, use [flyway](https://flywaydb.org/) to install 
+the schema. Installation involves downloading the schema and dropping
+the oracle JDBC jar into the flyway drivers directory.
+
+Edit the flyway.conf in the db directory with your particulars, then from
+the db directory run:
+
+<pre>
+flyway -user=esdbo -password=password -locations=filesystem:migration migrate
 </pre>
 
 

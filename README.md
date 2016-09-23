@@ -13,24 +13,8 @@ go get -u github.com/mattn/go-oci8
 
 ## Database Set Up
 
-For the database set up, create two users: one to own and manage the schema
-objects, and the other for runtime access:
-
-<pre>
-create user esdbo
-identified by password
-default tablespace users
-temporary tablespace temp;
-
-grant dba to esdbo;
-
-create user esusr
-identified by password
-default tablespace users
-temporary tablespace temp;
-
-grant connect to esusr;
-</pre>
+For the database set up, we assume the availability of a database user who can create schema
+objects.
 
 To install the schema, use [flyway](https://flywaydb.org/) to install 
 the schema. Installation involves downloading the schema and dropping
@@ -41,44 +25,6 @@ the db directory run:
 
 <pre>
 flyway -user=esdbo -password=password -locations=filesystem:migration migrate
-</pre>
-
-
-Tables, create as esdbo:
-
-<pre>
-create table events (
-    id  number generated always as identity,
-    event_time timestamp DEFAULT current_timestamp,
-    aggregate_id varchar2(60)not null,
-    version integer not null,
-    typecode varchar2(30) not null,
-    payload blob,
-    primary key(aggregate_id,version)
-)
-
-create table publish (
-    aggregate_id varchar2(60)not null,
-    version integer not null,
-    primary key(aggregate_id,version)
-);
-</pre>
-
-Create a user to access the tables.
-
-<pre>
-create user esusr
-identified by password
-default tablespace users
-temporary tablespace temp;
-
-grant connect to esusr;
-
-create or replace synonym esusr.events for esdbo.events;
-grant select, insert on events to esusr;
-
-create or replace synonym esusr.publish for esdbo.publish;
-grant select, insert, delete on publish to esusr;
 </pre>
 
 ## A Note on the Publish Table

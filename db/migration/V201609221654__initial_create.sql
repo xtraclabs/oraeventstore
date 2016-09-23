@@ -13,9 +13,3 @@ create table publish (
     version integer not null,
     primary key(aggregate_id,version)
 );
-
-create or replace synonym esusr.events for esdbo.events;
-grant select, insert on events to esusr;
-
-create or replace synonym esusr.publish for esdbo.publish;
-grant select, insert, delete on publish to esusr;

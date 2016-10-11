@@ -20,29 +20,29 @@ func init() {
 	})
 
 	GlobalContext.BeforeAll(func() {
-		DBUser = os.Getenv("FEED_DB_USER")
+		DBUser = os.Getenv("DB_USER")
 		if DBUser == "" {
-			configErrors = append(configErrors, "Configuration missing FEED_DB_USER env variable")
+			configErrors = append(configErrors, "Configuration missing DB_USER env variable")
 		}
 
-		DBPassword = os.Getenv("FEED_DB_PASSWORD")
+		DBPassword = os.Getenv("DB_PASSWORD")
 		if DBPassword == "" {
-			configErrors = append(configErrors, "Configuration missing FEED_DB_PASSWORD env variable")
+			configErrors = append(configErrors, "Configuration missing DB_PASSWORD env variable")
 		}
 
-		DBHost = os.Getenv("FEED_DB_HOST")
+		DBHost = os.Getenv("DB_HOST")
 		if DBHost == "" {
-			configErrors = append(configErrors, "Configuration missing FEED_DB_HOST env variable")
+			configErrors = append(configErrors, "Configuration missing DB_HOST env variable")
 		}
 
-		DBPort = os.Getenv("FEED_DB_PORT")
+		DBPort = os.Getenv("DB_PORT")
 		if DBPort == "" {
-			configErrors = append(configErrors, "Configuration missing FEED_DB_PORT env variable")
+			configErrors = append(configErrors, "Configuration missing DB_PORT env variable")
 		}
 
-		DBSvc = os.Getenv("FEED_DB_SVC")
+		DBSvc = os.Getenv("DB_SVC")
 		if DBSvc == "" {
-			configErrors = append(configErrors, "Configuration missing FEED_DB_SVC env variable")
+			configErrors = append(configErrors, "Configuration missing DB_SVC env variable")
 		}
 
 	})

@@ -1,13 +1,16 @@
 package eventstore
 
 import (
+	"database/sql"
+	"fmt"
+	"strings"
+
 	log "github.com/Sirupsen/logrus"
 	. "github.com/gucumber/gucumber"
 	"github.com/stretchr/testify/assert"
 	"github.com/xtracdev/goes"
 	. "github.com/xtracdev/goes/sample/testagg"
 	"github.com/xtracdev/oraeventstore"
-	"strings"
 )
 
 func init() {
@@ -23,9 +26,20 @@ func init() {
 			assert.Fail(T, strings.Join(configErrors, "\n"))
 			return
 		}
-
+		log.Info("open db connection")
+		connectStr := fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
+		db, err := sql.Open("oci8", connectStr)
+		if err != nil {
+			assert.Fail(T, "Error connecting to oracle")
+			return
+		}
+		err = db.Ping()
+		if err != nil {
+			assert.Fail(T, "Error connecting to oracle")
+			return
+		}
 		log.Info("create event store")
-		eventStore, _ = oraeventstore.NewOraEventStore(DBUser, DBPassword, DBSvc, DBHost, DBPort)
+		eventStore, _ = oraeventstore.NewOraEventStore(db)
 		if assert.NotNil(T, eventStore) {
 			var err error
 			testAgg, err = NewTestAgg("new foo", "new bar", "new baz")

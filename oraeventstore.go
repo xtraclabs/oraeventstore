@@ -3,11 +3,11 @@ package oraeventstore
 import (
 	"database/sql"
 	"errors"
-	"fmt"
+	"os"
+
 	log "github.com/Sirupsen/logrus"
 	_ "github.com/mattn/go-oci8"
 	"github.com/xtracdev/goes"
-	"os"
 )
 
 var (
@@ -168,22 +168,8 @@ func (ora *OraEventStore) RetrieveEvents(aggID string) ([]goes.Event, error) {
 	return events, err
 }
 
-func NewOraEventStore(user, password, dbname, host, port string) (*OraEventStore, error) {
-	connectStr := fmt.Sprintf("%s/%s@//%s:%s/%s", user, password, host, port, dbname)
-	log.Infof("Connect using %s/XXXXXX@//%s:%s/%s", user, host, port, dbname)
-	db, err := sql.Open("oci8", connectStr)
-	if err != nil {
-		log.Warnf("Error connecting to oracle: %s", err.Error())
-		return nil, err
-	}
-
-	//Are we really in an ok state for starters?
-	err = db.Ping()
-	if err != nil {
-		log.Warnf("Error connecting to oracle: %s", err.Error())
-		return nil, err
-	}
-
+func NewOraEventStore(db *sql.DB) (*OraEventStore, error) {
+	log.Info("Creating event store...")
 	publishEvents := os.Getenv(EventPublishEnvVar)
 	switch publishEvents {
 	case "1":

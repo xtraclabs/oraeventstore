@@ -29,7 +29,7 @@ func init() {
 	When(`^I store an aggregate$`, func() {
 		var err error
 		connectStr := fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
-		db, err = sql.Open("oci8", connectStr)
+		db, err := sql.Open("oci8", connectStr)
 		if err != nil {
 			assert.Fail(T, "Error connecting to oracle")
 			return
@@ -39,7 +39,7 @@ func init() {
 			assert.Fail(T, "Error connecting to oracle")
 			return
 		}
-		eventStore, err = oraeventstore.NewOraEventStore(db)
+		eventStore, err := oraeventstore.NewOraEventStore(db)
 		if err != nil {
 			log.Infof("Error connecting to oracle: %s", err.Error())
 		}

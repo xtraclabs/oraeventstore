@@ -3,13 +3,14 @@ package eventstore
 import (
 	"database/sql"
 	"fmt"
+	"os"
+	"strings"
+
 	log "github.com/Sirupsen/logrus"
 	. "github.com/gucumber/gucumber"
 	"github.com/stretchr/testify/assert"
 	. "github.com/xtracdev/goes/sample/testagg"
 	"github.com/xtracdev/oraeventstore"
-	"os"
-	"strings"
 )
 
 func init() {
@@ -27,7 +28,13 @@ func init() {
 
 	When(`^I store an aggregate$`, func() {
 		var err error
-		eventStore, err = oraeventstore.NewOraEventStore(DBUser, DBPassword, DBSvc, DBHost, DBPort)
+		var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
+		db, err := sql.Open("oci8", connectStr)
+		if !assert.Nil(T, err) {
+			return
+		}
+		defer db.Close()
+		eventStore, err = oraeventstore.NewOraEventStore(db)
 		if err != nil {
 			log.Infof("Error connecting to oracle: %s", err.Error())
 		}
@@ -80,7 +87,13 @@ func init() {
 	})
 
 	When(`^I store a new aggregate$`, func() {
-		eventStore, err := oraeventstore.NewOraEventStore(DBUser, DBPassword, DBSvc, DBHost, DBPort)
+		var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
+		db, err := sql.Open("oci8", connectStr)
+		if !assert.Nil(T, err) {
+			return
+		}
+		defer db.Close()
+		eventStore, err := oraeventstore.NewOraEventStore(db)
 		if err != nil {
 			log.Infof("Error creating event store: %s", err.Error())
 		}

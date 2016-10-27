@@ -6,7 +6,6 @@ import (
 	"os"
 
 	log "github.com/Sirupsen/logrus"
-	_ "github.com/mattn/go-oci8"
 	"github.com/xtracdev/goes"
 )
 

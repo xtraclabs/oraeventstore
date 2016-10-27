@@ -7,6 +7,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	. "github.com/gucumber/gucumber"
+	_ "github.com/mattn/go-oci8"
 	"github.com/stretchr/testify/assert"
 	"github.com/xtracdev/goes"
 	. "github.com/xtracdev/goes/sample/testagg"

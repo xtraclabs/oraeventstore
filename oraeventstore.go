@@ -85,7 +85,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 		}
 
 		log.Debug("execute statement")
-		_, execerr := stmt.Exec(agg.ID, e.Version, e.TypeCode, eventBytes)
+		_, execerr := stmt.Exec(agg.AggregateID, e.Version, e.TypeCode, eventBytes)
 		if execerr != nil {
 			stmt.Close()
 			log.Warn(execerr.Error())
@@ -94,7 +94,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 
 		if ora.publish {
 			log.Debug("execute publish statement")
-			_, puberr := pubStmt.Exec(agg.ID, e.Version)
+			_, puberr := pubStmt.Exec(agg.AggregateID, e.Version)
 			if puberr != nil {
 				log.Warn(puberr.Error())
 				return ErrPubInsert
@@ -118,7 +118,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 
 func (ora *OraEventStore) StoreEvents(agg *goes.Aggregate) error {
 	//Select max for the aggregate id
-	max, err := ora.GetMaxVersionForAggregate(agg.ID)
+	max, err := ora.GetMaxVersionForAggregate(agg.AggregateID)
 	if err != nil {
 		return err
 	}

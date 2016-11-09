@@ -52,7 +52,7 @@ func init() {
 				log.Infof("Error storing aggregate: %s", err.Error())
 			}
 
-			log.Infof("Stored aggregate %s", testAgg.ID)
+			log.Infof("Stored aggregate %s", testAgg.AggregateID)
 		}
 	})
 
@@ -68,8 +68,8 @@ func init() {
 		defer db.Close()
 
 		var count int = -1
-		log.Infof("looking for publish of agg %s version %d", testAgg.ID, testAgg.Version)
-		err = db.QueryRow("select count(*) from publish where aggregate_id = :1 and version = :2", testAgg.ID, testAgg.Version).Scan(&count)
+		log.Infof("looking for publish of agg %s version %d", testAgg.AggregateID, testAgg.Version)
+		err = db.QueryRow("select count(*) from publish where aggregate_id = :1 and version = :2", testAgg.AggregateID, testAgg.Version).Scan(&count)
 		if err != nil {
 			log.Infof("Error querying for published events: %s", err.Error())
 		}
@@ -119,7 +119,7 @@ func init() {
 		defer db.Close()
 
 		var count int = -1
-		err = db.QueryRow("select count(*) from publish where aggregate_id = :1 and version = :2", testAgg2.ID, testAgg2.Version).Scan(&count)
+		err = db.QueryRow("select count(*) from publish where aggregate_id = :1 and version = :2", testAgg2.AggregateID, testAgg2.Version).Scan(&count)
 		if err != nil {
 			log.Infof("Error selecting from publish table: %s", err.Error())
 		}

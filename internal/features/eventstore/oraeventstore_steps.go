@@ -48,7 +48,7 @@ func init() {
 
 	Then(`^the max version is 0$`, func() {
 		if eventStore != nil {
-			max, err := eventStore.GetMaxVersionForAggregate(testAgg.ID)
+			max, err := eventStore.GetMaxVersionForAggregate(testAgg.AggregateID)
 			if err != nil {
 				log.Infof("Error reading max version for agg: %s", err.Error())
 			}
@@ -61,7 +61,7 @@ func init() {
 
 	When(`^we get the max version from the event store$`, func() {
 		var err error
-		concurrentMax, err = eventStore.GetMaxVersionForAggregate(testAgg.ID)
+		concurrentMax, err = eventStore.GetMaxVersionForAggregate(testAgg.AggregateID)
 		assert.Nil(T, err)
 	})
 
@@ -101,7 +101,7 @@ func init() {
 
 	When(`^we retrieve the events for the aggregate$`, func() {
 		var err error
-		events, err = eventStore.RetrieveEvents(anotherAgg.ID)
+		events, err = eventStore.RetrieveEvents(anotherAgg.AggregateID)
 		if err != nil {
 			log.Infof("error retrieving events for the aggregate: %s", err.Error())
 		}

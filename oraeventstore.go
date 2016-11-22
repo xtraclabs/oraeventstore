@@ -77,7 +77,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 	}
 
 	for _, e := range agg.Events {
-		log.Debug("process event %v\n", e)
+		log.Debugf("process event %v\n", e)
 		eventBytes, ok := e.Payload.([]byte)
 		if !ok {
 			stmt.Close()

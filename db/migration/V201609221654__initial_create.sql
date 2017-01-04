@@ -1,4 +1,4 @@
-create table events (
+create table t_aeev_events (
     id  number generated always as identity,
     event_time timestamp DEFAULT current_timestamp,
     aggregate_id varchar2(60)not null,
@@ -8,7 +8,7 @@ create table events (
     primary key(aggregate_id,version)
 );
 
-create table publish (
+create table t_aepb_publish (
     aggregate_id varchar2(60)not null,
     version integer not null,
     primary key(aggregate_id,version)

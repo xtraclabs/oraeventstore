@@ -3,14 +3,13 @@ package main
 //This is a little test utility used for development - updated is with your credentials and import the
 //appropriate event sourced entities to dump them
 
-
 import (
+	"database/sql"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/xtracdev/goes/sample/testagg"
 	"github.com/xtracdev/oraeventstore"
 	"os"
-	"fmt"
-	"database/sql"
 )
 
 func fatal(err error) {

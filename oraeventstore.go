@@ -18,7 +18,7 @@ var (
 
 const (
 	EventPublishEnvVar = "ES_PUBLISH_EVENTS"
-	insertSQL          = "insert into events (aggregate_id, version, typecode, payload) values (:1, :2, :3, :4)"
+	insertSQL          = "insert into t_aeev_events (aggregate_id, version, typecode, payload) values (:1, :2, :3, :4)"
 )
 
 type OraEventStore struct {
@@ -27,7 +27,7 @@ type OraEventStore struct {
 }
 
 func (ora *OraEventStore) GetMaxVersionForAggregate(aggId string) (*int, error) {
-	row, err := ora.db.Query("select max(version) from events where aggregate_id = :1", aggId)
+	row, err := ora.db.Query("select max(version) from t_aeev_events where aggregate_id = :1", aggId)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (ora *OraEventStore) GetMaxVersionForAggregate(aggId string) (*int, error) 
 }
 
 func InsertEventFromParts(db *sql.DB, aggId string, version int, typecode string, payload []byte) error {
-	_, err := db.Exec("insert into events (aggregate_id, version, typecode, payload) values (:1, :2, :3, :4)",
+	_, err := db.Exec("insert into t_aeev_events (aggregate_id, version, typecode, payload) values (:1, :2, :3, :4)",
 		aggId, version, typecode, payload)
 	return err
 }
@@ -70,7 +70,7 @@ func (ora *OraEventStore) writeEvents(agg *goes.Aggregate) error {
 	if ora.publish {
 		log.Debug("create publish statement")
 		var pubstmtErr error
-		pubStmt, pubstmtErr = tx.Prepare("insert into publish (aggregate_id, version) values (:1, :2)")
+		pubStmt, pubstmtErr = tx.Prepare("insert into t_aepb_publish (aggregate_id, version) values (:1, :2)")
 		if pubstmtErr != nil {
 			return pubstmtErr
 		}
@@ -138,7 +138,7 @@ func (ora *OraEventStore) RetrieveEvents(aggID string) ([]goes.Event, error) {
 	var events []goes.Event
 
 	//Select the events, ordered by version
-	rows, err := ora.db.Query(`select version, typecode, payload from events where aggregate_id = :1 order by version`, aggID)
+	rows, err := ora.db.Query(`select version, typecode, payload from t_aeev_events where aggregate_id = :1 order by version`, aggID)
 	if err != nil {
 		return nil, err
 	}

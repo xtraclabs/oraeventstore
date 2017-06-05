@@ -17,6 +17,7 @@ import (
 func init() {
 	var eventStore *oraeventstore.OraEventStore
 	var testAgg, testAgg2 *TestAgg
+	var eventCount int
 
 	Given(`^an evironment with event publishing disabled$`, func() {
 		if len(configErrors) != 0 {
@@ -125,6 +126,49 @@ func init() {
 		}
 		assert.Nil(T, err)
 		assert.Equal(T, 1, count)
+	})
+
+	When(`^I republish the events$`, func() {
+		var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
+		db, err := sql.Open("oci8", connectStr)
+		if !assert.Nil(T, err) {
+			return
+		}
+		defer db.Close()
+
+		var eventRecords int
+		err = db.QueryRow("select  count(*) from t_aeev_events").Scan(&eventRecords)
+
+		if !assert.Nil(T, err) {
+			return
+		}
+
+		eventCount = eventRecords
+
+		log.Info("republish the events")
+		eventStore, err := oraeventstore.NewOraEventStore(db)
+		err = eventStore.RepublishAllEvents()
+		if !assert.Nil(T, err) {
+			return
+		}
+	})
+
+	Then(`^all the events are written to the publish table$`, func() {
+		var connectStr = fmt.Sprintf("%s/%s@//%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBSvc)
+		db, err := sql.Open("oci8", connectStr)
+		if !assert.Nil(T, err) {
+			return
+		}
+		defer db.Close()
+
+		var publishRecords int
+		err = db.QueryRow("select  count(*) from t_aepb_publish").Scan(&publishRecords)
+
+		if !assert.Nil(T, err) {
+			return
+		}
+
+		assert.Equal(T, eventCount, publishRecords)
 	})
 
 }

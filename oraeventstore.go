@@ -7,6 +7,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/xtracdev/goes"
+	"time"
+	"strings"
 )
 
 var (
@@ -165,6 +167,63 @@ func (ora *OraEventStore) RetrieveEvents(aggID string) ([]goes.Event, error) {
 	err = rows.Err()
 
 	return events, err
+}
+
+func (ora *OraEventStore) RepublishAllEvents() error {
+
+	var tx *sql.Tx = nil
+
+	log.Debug("execute query")
+	rows, err := ora.db.Query(`select event_time, aggregate_id, version, typecode, payload from t_aeev_events order by event_time`)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+
+	var version int
+	var typecode string
+	var payload []byte
+	var eventTime time.Time
+	var aggregateID string
+
+	log.Debug("create transaction")
+
+	for rows.Next() {
+		tx, err = ora.db.Begin()
+		if err != nil {
+			return err
+		}
+
+		log.Debug("scan row")
+		rows.Scan(&eventTime, &aggregateID, &version, &typecode, &payload)
+
+		log.Debug("insert row")
+		_, err := tx.Exec(`insert into t_aepb_publish (aggregate_id, version)  values(:1,:2)`,
+			aggregateID, version,
+		)
+
+		if err != nil {
+			log.Debug(err.Error())
+			if strings.Contains(err.Error(), "unique constraint") == false {
+				log.Debug("rollback transaction")
+				return err
+			} else {
+				log.Debug("ignoring unique constraint error")
+				continue
+			}
+		}
+
+		log.Debug("commit tx")
+		err = tx.Commit()
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+
+	}
+
+	return nil
 }
 
 func NewOraEventStore(db *sql.DB) (*OraEventStore, error) {

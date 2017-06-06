@@ -199,6 +199,7 @@ func (ora *OraEventStore) RepublishAllEvents() error {
 		rows.Scan(&eventTime, &aggregateID, &version, &typecode, &payload)
 
 		log.Debug("insert row")
+		log.Infof("Replublishing event %s - %d", aggregateID, version)
 		_, err := tx.Exec(`insert into t_aepb_publish (aggregate_id, version)  values(:1,:2)`,
 			aggregateID, version,
 		)

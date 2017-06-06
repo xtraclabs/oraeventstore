@@ -1,13 +1,13 @@
 package main
 
 import (
-	"os"
-	"strings"
-	"fmt"
 	"database/sql"
-	"github.com/xtracdev/oraeventstore"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 	_ "github.com/mattn/go-oci8"
+	"github.com/xtracdev/oraeventstore"
+	"os"
+	"strings"
 )
 
 var user, password, dbhost, dbPort, dbSvc string
@@ -65,7 +65,7 @@ func main() {
 		log.Fatalf("Error connecting to oracle: %s", err.Error())
 	}
 
-	err =eventStore.RepublishAllEvents()
+	err = eventStore.RepublishAllEvents()
 	if err != nil {
 		log.Warn(err.Error())
 	}

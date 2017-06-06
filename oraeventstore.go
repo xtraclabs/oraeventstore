@@ -7,8 +7,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/xtracdev/goes"
-	"time"
 	"strings"
+	"time"
 )
 
 var (
